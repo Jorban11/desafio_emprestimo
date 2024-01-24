@@ -1,0 +1,103 @@
+'''
+Desafio Emprestimo
+    Seu desafio será implementar um serviço que determine quais modalidades de empréstimo uma pessoa tem acesso.
+
+As modalidades de empréstimo que serão analisadas são:
+
+    Empréstimo pessoal: Taxa de juros de 4%.
+    Empréstimo consignado: Taxa de juros de 2%.
+    Empréstimo com garantia: Taxa de juros de 3%.
+
+As modalidades de empréstimo disponíveis para uma pessoa são baseadas em algumas variáveis específicas, são elas:
+
+    Idade
+    Salário
+    Localização
+
+Seu serviço recebe uma chamada para determinar quais modalidades de empréstimo uma pessoa tem acesso.
+POST {host}/costumer_loans e deve enviar um json para host como no exemplo:
+
+   {
+  "age": 26,
+  "cpf": "275.484.389-23",
+  "name": "Vuxaywua Zukiagou",
+  "income": 7000.00,
+  "location": "SP"
+    }
+
+
+
+Seu serviço deve retornar uma resposta contendo o nome do cliente e uma lista de empréstimos aos quais ele tem acesso, com os respectivos tipos e taxas de juros.
+
+{
+  "customer": "Vuxaywua Zukiagou",
+  "loans": [
+    {
+      "type": "PERSONAL",
+      "interest_rate": 4
+    },
+    {
+      "type": "GUARANTEED",
+      "interest_rate": 3
+    },
+    {
+      "type": "CONSIGNMENT",
+      "interest_rate": 2
+    }
+  ]
+}
+ 
+Conceder o empréstimo pessoal se o salário do cliente for igual ou inferior a R$ 3000.
+Conceder o empréstimo pessoal se o salário do cliente estiver entre R$ 3000 e R$ 5000, 
+  se o cliente tiver menos de 30 anos e residir em São Paulo (SP).
+
+Conceder o empréstimo consignado se o salário do cliente for igual ou superior a R$ 5000.
+
+Conceder o empréstimo com garantia se o salário do cliente for igual ou inferior a R$ 3000.
+Conceder o empréstimo com garantia se o salário do cliente estiver entre R$ 3000 e R$ 5000, se o cliente tiver menos de 30 anos e residir em São Paulo (SP).
+
+'''
+
+Linha de raciocinio: 
+    Instalar componentes de conexão entre programa e base de dados, que nesse caso vai ser uma lista de no máximo 5 presets e 
+    oportunidade de adicionar algum conjunto a mais para aprofundar testes
+    Criar um CRUD basico que vai estar "conectado" ao host, as funções deveram ter um endpoint com portas diferentes entre si.
+
+Pseudo Codigos:
+
+{{
++importar bibliotecas+
++Codigos iniciais para Conexao REST+ CASO JS 
+
+importar express _E_ axios
+
+função ReceberListaClientes(){}     //endpoint emprestimos 
+
+função EnviarNovoCliente(){}        //endpoint emprestimos 
+
+função DeletarClienteExistente(){}  //endpoint emprestimos 
+
+função AlterarClienteExistente(){}  //endpoint emprestimos 
+
+---//
+
+função ChecarEmprestimosCliente(CpfDoCliente){ +Usando arvore IfElse+ 
+    variavel cliente = Cliente;
+
+    se cliente.income <= 3000{
+        conceder Emprestimo Pessoal
+        conceder Emprestimo com Garantia
+    }
+    se 3000 < cliente.income < 5000 _E_ cliente.age < 30 _E_ cliente.location é SP{
+        conceder Emprestimo Pessoal
+        conceder Emprestimo com Garantia
+    }
+    ou se cliente.income >= 5000{
+        conceder Emprestimo Consignado
+    }
+}
+
+---//
+
+}}
+    
