@@ -3,6 +3,7 @@
 //Primeiramente instalar bibliotecas com npm usando:
 //Importar Express
 const express = require('express');
+const { type } = require('os');
 const { format } = require('path');
 //Atribuir variavel 'aplicativo' como porta do express
 const aplicativo = express()
@@ -14,7 +15,8 @@ const database_usuarios = []
 
 //Funçoes Gerais
 const generalfuncs = {
-    // g=Get, c=Check    
+    // g=Get, c=Check   
+ 
 }
 
 
@@ -29,8 +31,9 @@ aplicativo.get('/clientes/:cpf',(req,res)=>{
     const clientFull = database_usuarios.filter((i)=>{
         return i.cpf.replace(/[-.]/g,'') === req.params.cpf.toString();
     })[0]
+    
     const loans = []
-    if((parseInt(clientFull.income)<3000)||(3000<parseInt(clientFull.income)<5000 && parseInt(clientFull.age)<30 && clientFull.location === 'SP')){
+    if(parseInt(clientFull.income)<3000){
         loans.push({
             'cliente':clientFull.name,
             'loans':[
@@ -41,11 +44,32 @@ aplicativo.get('/clientes/:cpf',(req,res)=>{
                 {
                     'type':'GUARANTEED',
                     'interest':'3'
-                },
-            ]
-        })
-        res.send(loans)
-       
+                }],
+            'client income': 'income < 3000'});
+
+        return res.send(loans[0])
+
+    }if((parseInt(clientFull.income) > 3000) && (parseInt(clientFull.income) < 5000)){
+         if(parseInt(clientFull.age)<30){ 
+            if(clientFull==='SP'){  
+                loans.push({
+                    'cliente':clientFull.name,
+                    'loans':[
+                    {
+                        'type':'PERSONAL',
+                        'interest':'4'
+                    },
+                    {
+                        'type':'GUARANTEED',
+                        'interest':'3'
+                    }],
+                    'client income': '3000<income<5000',
+                    'client age': parseInt(clientFull.age),
+                    'client local': clientFull.location,
+                });
+                return res.send(loans[0])
+            }
+        }
     }if(parseInt(clientFull.income)>5000){
         loans.push({
             'cliente':clientFull.name,
@@ -62,11 +86,23 @@ aplicativo.get('/clientes/:cpf',(req,res)=>{
                     'type':'CONSIGNED',
                     'interest':'2'
                 },
-            ]
-        })
-    }
-    res.send(loans)
-
+            ],
+            'client income': 'income > 5000'})
+        return res.send(loans[0])
+    }else{
+        loans.push({
+            'cliente':clientFull.name,
+            'loans':[
+            {
+                'type':'NONE',
+                'interest':'0'
+            }],
+            'client income': clientFull.income,
+            'client age': parseInt(clientFull.age),
+            'client local': clientFull.location,
+        });
+        return res.send(loans[0])
+    }   
 })
 
 //POST para enviar info para database
