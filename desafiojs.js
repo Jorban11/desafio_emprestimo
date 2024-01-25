@@ -1,5 +1,3 @@
-//C:\Users\joaoo\OneDrive\Documentos\nodejs_2022\desafio_emprestimo
-
 //Primeiramente instalar bibliotecas com npm usando:
 //Importar Express
 const express = require('express');
